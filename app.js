@@ -31,15 +31,15 @@ bucle: do {
         `);
 
     switch (opcionDeInicioElegida) {
-        case "1": inicioSesion ();
+        case "1": inicioSesion();
             break;
-        case "2": registro ();
-            break; 
-        case "3": 
-            alert ("Saliendo del sistema");
+        case "2": registro();
+            break;
+        case "3":
+            alert("Saliendo del sistema");
             break;
         default:
-            alert ("Opcion no valida")
+            alert("Opcion no valida")
             break;
     }
 
@@ -56,9 +56,9 @@ function inicioSesion() {
     if (corroborarMail) {
         alert('mail ok');
     } else {
-        alert('Mail incorrecto');
+        alert('Su email no se encuentra. Verifique que este bien escrito o proceda a registrarse');
         prompt('Ingresa un mail');
-        return inicioSesion(mail, contraseña);
+        return inicioSesion();
     }
     const contraseña = prompt('Ingresa la contraseña');
     //Buscar la constraseña en la base de datos. Creo una variable para alojar el resultado de la comparacion
@@ -69,13 +69,14 @@ function inicioSesion() {
         alert('contraseña incorrecta');
         prompt('Ingresa la contraseña');
     }
+    gestionDeProductos(corroborarMail);
 }
-inicioSesion();
+
 
 function registro() {
     const mail = prompt('Ingresa un mail');
     // Buscar el email en la base de datos // corroborarMail es donde se aloja el resultado de la comparación
-    const corroborarMail = baseDeDatos.find(usuario => usuario.email === mail);
+    const corroborarMail = baseDeDatos.find(baseDeDatos => baseDeDatos.email === mail);
 
     if (corroborarMail) {
         alert('Su mail ya está registrado');
@@ -88,7 +89,50 @@ function registro() {
             password: contraseña,
             productos: [] // Inicialmente, no hay productos
         });
-        alert("Registro completado. ////////////////.");
+        alert("Registro completado. Ahora inicie sesion.");
     }
 }
-registro();
+
+
+function gestionDeProductos(corroborarMail) {
+    let gestionDeProductos;
+    do {
+        gestionDeProductos = prompt(`<< Gestion de Productos >>
+
+            1. Agregar un producto.
+            2. Consultar productos.
+            3. Salir del sistema.
+    
+            Eliga una opcion:
+            `);
+
+        switch (gestionDeProductos) {
+            case "1":
+                let nuevoProducto = prompt("Ingrese un producto:");                
+                corroborarMail.productos.push(nuevoProducto);
+                alert ('El producto se ha agregado a la lista con exito');
+            
+                /*if (baseDeDatos.productos === nuevoProducto) {
+                    alert('Ese producto ya esta en la lista');
+                } else {
+                    baseDeDatos.productos.push(nuevoProducto);
+                    alert('El producto se ha agregado a la lista con exito');                   
+                }*/
+                break;
+
+            case "2":
+                if (corroborarMail.productos.length === 0) {
+                    alert("No tienes productos en la lista");
+                } else {
+                    const productosString = corroborarMail.productos.join(', ');
+                    alert(`Sus productos son ${productosString}`);
+                }
+                break;
+            case "3":
+                alert("Sesion cerrada");
+                break;
+            default: alert("Opcion no valida")
+                break;
+        }
+    } while (true);
+};
