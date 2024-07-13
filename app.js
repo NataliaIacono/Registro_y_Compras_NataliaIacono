@@ -134,5 +134,5 @@ function gestionDeProductos(corroborarMail) {
             default: alert("Opcion no valida")
                 break;
         }
-    } while (true);
+    } while (gestionDeProductos !== "3");
 };
